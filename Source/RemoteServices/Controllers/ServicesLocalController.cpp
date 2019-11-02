@@ -30,7 +30,6 @@ private:
 ServicesLocalController::~ServicesLocalController()
 {
     DestroyServices();
-    ServicesControllerBase::~ServicesControllerBase();
 }
 
 void ServicesLocalController::CreateServices()
