@@ -2,3 +2,7 @@
 	path = Dependencies/MVCUtilities
 	url = https://github.com/MaxGarden/MVCUtilities.git
 	branch = develop
+[submodule "Dependencies/Networking"]
+	path = Dependencies/Networking
+	url = https://github.com/MaxGarden/Networking.git
+	branch = develop
