@@ -1,0 +1,4 @@
+[submodule "Dependencies/MVCUtilities"]
+	path = Dependencies/MVCUtilities
+	url = https://github.com/MaxGarden/MVCUtilities.git
+	branch = develop
