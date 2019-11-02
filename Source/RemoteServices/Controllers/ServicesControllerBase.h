@@ -10,7 +10,7 @@ namespace RemoteServices
         virtual ~ServicesControllerBase() override = default;
 
         virtual bool RegisterServiceFactory(IServiceFactoryUniquePtr&& serviceFactory) override final;
-        virtual void VisitServices(const MVC::ConstVisitorType<IService>& visitor) const override final;
+        virtual void VisitServices(const MVC::VisitorType<IService>& visitor) const override final;
 
         virtual bool Disconnect() override final;
 
