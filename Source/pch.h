@@ -7,6 +7,8 @@
 
 #ifdef __cplusplus
 
+#include "RemoteServices.h"
+
 #endif //__cplusplus
 
 #endif //_STDAFX_H_
