@@ -80,7 +80,7 @@ bool ServicesControllerBase::RegisterServiceFactory(IServiceFactoryUniquePtr&& s
     return true;
 }
 
-void ServicesControllerBase::VisitServices(const MVC::VisitorType<IService>& visitor) const
+void ServicesControllerBase::VisitServices(const MVC::ConstVisitorType<IService>& visitor) const
 {
     if (!visitor)
         return;
