@@ -24,7 +24,7 @@ namespace RemoteServices
 
         virtual void Finalize() = 0;
 
-        virtual void OnReceived(const std::vector<byte>& payload) = 0;
+        virtual void OnReceived(const ServicePayload& payload) = 0;
     };
 
     class IServiceFactory
