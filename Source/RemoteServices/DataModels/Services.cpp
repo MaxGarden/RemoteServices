@@ -70,15 +70,13 @@ bool Services::Send(Packet&& packet)
     const auto packetSize = static_cast<PacketSizeType>(packetRawSize);
     const auto expectedSentDataSize = packetSize + sizeof(PacketSizeType);
 
-    auto sentDataSize = 0u;
-
     auto&& payload = std::move(packet.Payload);
     packet.Payload.insert(payload.begin(), packet.ServicePort);
 
-    m_connection->Send(std::move(payload)); 
+    const auto result = m_connection->Send(std::move(payload));
 
-    DEBUG_ASSERT(sentDataSize == expectedSentDataSize);
-    return sentDataSize == expectedSentDataSize;
+    REMOTE_SERVICES_ASSERT(result);
+    return result;
 }
 
 bool Services::Disconnect()
