@@ -206,6 +206,8 @@ void ServicesControllerBase::UnpairService(ServiceData& serviceData)
     connection.reset();
 
     NotifyListeners(&IServicesControllerListener::OnServiceUnparied, *service);
+    OnServiceUnpaired(serviceData);
+
     m_pairedServices.erase(serviceData.ServicePort);
 }
 
@@ -239,4 +241,9 @@ std::optional<byte> ServicesControllerBase::GetFreeServicePort() const noexcept
     }
 
     return std::nullopt;
+}
+
+void ServicesControllerBase::OnServiceUnpaired(ServiceData& serviceData)
+{
+    //to override
 }

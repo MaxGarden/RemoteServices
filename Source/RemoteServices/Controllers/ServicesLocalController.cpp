@@ -15,7 +15,7 @@ public:
 
 protected:
     virtual void OnPairMessage(const ServicePayload& payload) override final;
-    virtual void UnpairService(ServiceData& serviceData) override final;
+    virtual void OnServiceUnpaired(ServiceData& serviceData) override final;
 
 private:
     void OnPairRequest(const std::string& serviceName);
@@ -67,9 +67,8 @@ void ServicesLocalController::OnPairMessage(const ServicePayload& payload)
     OnPairRequest(std::string{ payload.cbegin(), payload.cend() });
 }
 
-void ServicesLocalController::UnpairService(ServiceData& serviceData)
+void ServicesLocalController::OnServiceUnpaired(ServiceData& serviceData)
 {
-    ServicesControllerBase::UnpairService(serviceData);
     m_createdServices.emplace(serviceData.ServiceName, std::move(serviceData.Service));
 }
 

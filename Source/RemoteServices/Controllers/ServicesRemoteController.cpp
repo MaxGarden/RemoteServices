@@ -16,7 +16,7 @@ public:
 protected:
     virtual void OnPairMessage(const ServicePayload& payload) override final;
 
-    virtual void UnpairService(ServiceData& serviceData) override final;
+    virtual void OnServiceUnpaired(ServiceData& serviceData) override final;
     virtual void UnpairServices() override final;
 
 private:
@@ -49,9 +49,8 @@ void ServicesRemoteController::OnPairMessage(const ServicePayload& payload)
     OnPairResponse(serviceName, servicePort);
 }
 
-void ServicesRemoteController::UnpairService(ServiceData& serviceData)
+void ServicesRemoteController::OnServiceUnpaired(ServiceData& serviceData)
 {
-    ServicesControllerBase::UnpairService(serviceData);
     serviceData.Service->Finalize();
 }
 

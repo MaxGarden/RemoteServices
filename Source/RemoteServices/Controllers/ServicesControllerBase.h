@@ -36,14 +36,17 @@ namespace RemoteServices
 
         virtual void OnPairMessage(const ServicePayload& payload) = 0;
 
-        virtual void PairService(const std::string& serviceName, IServiceUniquePtr&& service, byte servicePort);
-        virtual void UnpairService(ServiceData& serviceData);
+        void PairService(const std::string& serviceName, IServiceUniquePtr&& service, byte servicePort);
+        void UnpairService(ServiceData& serviceData);
 
         virtual void UnpairServices();
 
         void VisitServiceFactories(const MVC::VisitorType<IServiceFactory&>& visitor);
 
         std::optional<byte> GetFreeServicePort() const noexcept;
+
+    protected:
+        virtual void OnServiceUnpaired(ServiceData& serviceData);
 
     protected:
         static const byte s_pairServicePort;
