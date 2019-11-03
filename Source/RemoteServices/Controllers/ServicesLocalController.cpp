@@ -64,11 +64,7 @@ void ServicesLocalController::OnPairMessage(const ServicePayload& payload)
     if (payload.empty())
         return;
 
-    std::string serviceName;
-    serviceName.resize(payload.size());
-
-    memcpy(reinterpret_cast<void*>(serviceName.data()), payload.data(), serviceName.size());
-    OnPairRequest(serviceName);
+    OnPairRequest(std::string{ payload.cbegin(), payload.cend() });
 }
 
 void ServicesLocalController::UnpairService(ServiceData& serviceData)
@@ -81,17 +77,18 @@ void ServicesLocalController::OnPairRequest(const std::string& serviceName)
 {
     const auto freeServicePort = GetFreeServicePort();
     const auto iterator = m_createdServices.find(serviceName);
+    ServicePayload payload{ serviceName.cbegin(), serviceName.cend() };
+
     if (!freeServicePort || iterator == m_createdServices.end())
-    {
-        ServicePayload payload(serviceName.cbegin(), serviceName.cend());
         payload.insert(payload.begin(), s_pairServicePort);
-        Send(s_pairServicePort, std::move(payload));
-    }
     else
     {
+        payload.insert(payload.begin(), *freeServicePort);
         PairService(serviceName, std::move(iterator->second), *freeServicePort);
         m_createdServices.erase(iterator);
     }
+
+    Send(s_pairServicePort, std::move(payload));
 }
 
 void ServicesLocalController::DestroyServices()
