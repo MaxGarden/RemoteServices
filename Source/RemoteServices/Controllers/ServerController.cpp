@@ -74,6 +74,8 @@ void ServerController::OnClientConnected(const RemoteServices::IServicesSharedPt
 
     m_clientsControllers.emplace(client, clientController);
     NotifyListeners(&IServerControllerListener::OnClientConnected, clientController);
+
+    clientController->CreateServices();
 }
 
 void ServerController::OnClientDisconnected(const RemoteServices::IServicesSharedPtr& client)
