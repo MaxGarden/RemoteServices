@@ -10,18 +10,22 @@ SET(REMOTE_SERVICES_SOURCES
     Include/RemoteServices/RemoteServices.h
     Include/RemoteServices/Service.h
     Include/RemoteServices/ServicesBuilder.h
+    
     Include/RemoteServices/DataModels/Services.h
     Include/RemoteServices/DataModels/ServicesListenerBase.h
+    Include/RemoteServices/DataModels/Server.h
+    Include/RemoteServices/DataModels/ServerListenerBase.h
+    
     Include/RemoteServices/Controllers/ServicesController.h
     Include/RemoteServices/Controllers/ServicesControllerListenerBase.h
+    Include/RemoteServices/Controllers/ServerController.h
+    Include/RemoteServices/Controllers/ServerControllerListenerBase.h
     
     Source/RemoteServices/Service.cpp
     Source/RemoteServices/ServicesBuilder.cpp
     Source/RemoteServices/DataModels/Services.cpp
     Source/RemoteServices/DataModels/ServicesListenerBase.cpp
-    Source/RemoteServices/DataModels/Server.h
     Source/RemoteServices/DataModels/Server.cpp
-    Source/RemoteServices/DataModels/ServerListenerBase.h
     Source/RemoteServices/DataModels/ServerListenerBase.cpp
     
     Source/RemoteServices/Controllers/ServicesControllerBase.h
@@ -29,9 +33,7 @@ SET(REMOTE_SERVICES_SOURCES
     Source/RemoteServices/Controllers/ServicesLocalController.cpp
     Source/RemoteServices/Controllers/ServicesRemoteController.cpp
     Source/RemoteServices/Controllers/ServicesControllerListenerBase.cpp
-    Source/RemoteServices/Controllers/ServerController.h
     Source/RemoteServices/Controllers/ServerController.cpp
-    Source/RemoteServices/Controllers/ServerControllerListenerBase.h
     Source/RemoteServices/Controllers/ServerControllerListenerBase.cpp
  
 )

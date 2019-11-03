@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ServerController.h"
+#include "RemoteServices/Controllers/ServerController.h"
 
 namespace RemoteServices
 {

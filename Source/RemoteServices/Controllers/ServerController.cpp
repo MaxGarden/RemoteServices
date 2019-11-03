@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "ServerController.h"
-#include "DataModels/ServerListenerBase.h"
+#include "RemoteServices/Controllers/ServerController.h"
+#include "RemoteServices/DataModels/ServerListenerBase.h"
 #include "MVC/ControllerBase.h"
 #include "RemoteServices/Controllers/ServicesController.h"
 
