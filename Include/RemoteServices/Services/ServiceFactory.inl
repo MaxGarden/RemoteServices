@@ -15,3 +15,9 @@ IServiceUniquePtr ServiceFactory<ServiceType>::Create()
 {
     return std::make_unique<ServiceType>();
 }
+
+template<typename ServiceType>
+IServiceFactoryUniquePtr ServiceFactory<ServiceType>::CreateFactory(std::string&& serviceName)
+{
+    return std::make_unique<ServiceFactory<ServiceType>>(std::move(serviceName));
+}
