@@ -10,6 +10,8 @@ SET(REMOTE_SERVICES_SOURCES
     Include/RemoteServices/RemoteServices.h
     
     Include/RemoteServices/Services/Service.h
+    Include/RemoteServices/Services/ServiceFactory.h
+    Include/RemoteServices/Services/ServiceFactory.inl
     
     Include/RemoteServices/DataModels/Services.h
     Include/RemoteServices/DataModels/ServicesListenerBase.h
