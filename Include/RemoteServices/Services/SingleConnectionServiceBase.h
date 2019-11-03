@@ -4,11 +4,11 @@
 
 namespace RemoteServices
 {
-    class SignaleConnectionServiceBase : public IService
+    class SingleConnectionServiceBase : public IService
     {
     public:
-        SignaleConnectionServiceBase() = default;
-        virtual ~SignaleConnectionServiceBase() override = default;
+        SingleConnectionServiceBase() = default;
+        virtual ~SingleConnectionServiceBase() override = default;
 
         virtual bool Initialize() override;
 

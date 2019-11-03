@@ -3,13 +3,13 @@
 
 using namespace RemoteServices;
 
-bool SignaleConnectionServiceBase::Initialize()
+bool SingleConnectionServiceBase::Initialize()
 {
     //to override
     return true;
 }
 
-void SignaleConnectionServiceBase::OnBind(const IServiceConnectionSharedPtr& connection)
+void SingleConnectionServiceBase::OnBind(const IServiceConnectionSharedPtr& connection)
 {
     DEBUG_ASSERT(!m_Connection);
     if (m_Connection)
@@ -18,24 +18,24 @@ void SignaleConnectionServiceBase::OnBind(const IServiceConnectionSharedPtr& con
     m_Connection = connection;
 }
 
-void SignaleConnectionServiceBase::OnUnbind(const IServiceConnectionSharedPtr& connection)
+void SingleConnectionServiceBase::OnUnbind(const IServiceConnectionSharedPtr& connection)
 {
     REMOTE_SERVICES_ASSERT(m_Connection == connection);
     if (m_Connection == connection)
         m_Connection.reset();
 }
 
-void SignaleConnectionServiceBase::Finalize()
+void SingleConnectionServiceBase::Finalize()
 {
     //to override
 }
 
-void SignaleConnectionServiceBase::OnReceived(const ServicePayload&)
+void SingleConnectionServiceBase::OnReceived(const ServicePayload&)
 {
     //to override
 }
 
-bool SignaleConnectionServiceBase::Send(ServicePayload&& payload)
+bool SingleConnectionServiceBase::Send(ServicePayload&& payload)
 {
     const auto& connection = GetConnection();
     REMOTE_SERVICES_ASSERT(connection);
@@ -47,7 +47,7 @@ bool SignaleConnectionServiceBase::Send(ServicePayload&& payload)
     return result;
 }
 
-const IServiceConnectionSharedPtr& SignaleConnectionServiceBase::GetConnection() const noexcept
+const IServiceConnectionSharedPtr& SingleConnectionServiceBase::GetConnection() const noexcept
 {
     return m_Connection;
 }
