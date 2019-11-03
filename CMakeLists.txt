@@ -8,7 +8,8 @@ SET(REMOTE_SERVICES_SOURCES
     Source/pch.cpp
     
     Include/RemoteServices/RemoteServices.h
-    Include/RemoteServices/Service.h
+    
+    Include/RemoteServices/Services/Service.h
     
     Include/RemoteServices/DataModels/Services.h
     Include/RemoteServices/DataModels/ServicesListenerBase.h
@@ -24,7 +25,8 @@ SET(REMOTE_SERVICES_SOURCES
     Include/RemoteServices/Controllers/ClientController.h
     Include/RemoteServices/Controllers/ClientControllerListenerBase.h
     
-    Source/RemoteServices/Service.cpp
+    Source/RemoteServices/Services/Service.cpp
+    
     Source/RemoteServices/DataModels/Services.cpp
     Source/RemoteServices/DataModels/ServicesListenerBase.cpp
     Source/RemoteServices/DataModels/Server.cpp

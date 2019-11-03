@@ -1,7 +1,7 @@
 #pragma once
 
 #include "MVC/Controller.h"
-#include "RemoteServices/Service.h"
+#include "RemoteServices/Services/Service.h"
 
 namespace RemoteServices
 {

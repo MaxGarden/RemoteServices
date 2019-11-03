@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DataModels/Services.h"
+#include "RemoteServices/DataModels/Services.h"
 
 namespace RemoteServices
 {
