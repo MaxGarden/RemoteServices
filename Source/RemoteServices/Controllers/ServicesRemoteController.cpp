@@ -39,19 +39,13 @@ void ServicesRemoteController::CreateServices()
 
 void ServicesRemoteController::OnPairMessage(const ServicePayload& payload)
 {
-    REMOTE_SERVICES_ASSERT(!payload.empty());
-    if (payload.empty())
+    byte servicePort;
+    REMOTE_SERVICES_ASSERT(payload.size() > sizeof(servicePort));
+    if (payload.size() <= sizeof(servicePort))
         return;
 
-    auto payloadOffset = 0u;
-    byte servicePort;
-    memcpy(&servicePort, payload.data(), sizeof(servicePort));
-    payloadOffset += sizeof(servicePort);
-
-    std::string serviceName;
-    serviceName.resize(payload.size() - payloadOffset);
-
-    memcpy(reinterpret_cast<void*>(serviceName.data()), payload.data() + payloadOffset, serviceName.size());
+    servicePort = *static_cast<const byte*>(payload.data());
+    const auto serviceName = std::string{ payload.cbegin() + sizeof(servicePort), payload.cend() };
     OnPairResponse(serviceName, servicePort);
 }
 
