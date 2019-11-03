@@ -46,7 +46,7 @@ namespace RemoteServices
         std::optional<byte> GetFreeServicePort() const noexcept;
 
     protected:
-        static const byte s_pairServicePort = 0;
+        static const byte s_pairServicePort;
 
     private:
         std::vector<IServiceFactoryUniquePtr> m_servicesFactories;

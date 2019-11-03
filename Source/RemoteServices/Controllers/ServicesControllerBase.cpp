@@ -6,6 +6,8 @@
 
 using namespace RemoteServices;
 
+const byte ServicesControllerBase::s_pairServicePort = 0u;
+
 class ServicesControllerListener final : public ServicesListenerBase
 {
 public:
