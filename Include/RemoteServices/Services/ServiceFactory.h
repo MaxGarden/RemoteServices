@@ -5,11 +5,11 @@
 namespace RemoteServices
 {
     template<typename ServiceType>
-    class ClientServiceFactory final : public IClientServiceFactory
+    class ServiceFactory final : public IClientServiceFactory
     {
     public:
-        ClientServiceFactory(std::string&& serviceName);
-        virtual ~ClientServiceFactory() override final = default;
+        ServiceFactory(std::string&& serviceName);
+        virtual ~ServiceFactory() override final = default;
 
         virtual const std::string& GetServiceName() const noexcept override final;
         virtual IServiceUniquePtr Create() override final;
