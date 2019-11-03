@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "RemoteServices/DataModels/Server.h"
 #include "MVC/ListenableBase.h"
-#include "RemoteServices/DataModels/ServicesListenerBase.h"
 
 using namespace RemoteServices;
 
@@ -25,7 +24,7 @@ private:
     void OnClientDisconnected(const Networking::IConnectionSharedPtr& connection);
 
 private:
-    Networking::IServerUniquePtr  m_server;
+    Networking::IServerUniquePtr m_server;
     std::map<Networking::IConnectionSharedPtr, RemoteServices::IServicesSharedPtr> m_clients;
 };
 
