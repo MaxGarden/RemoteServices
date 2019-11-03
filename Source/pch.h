@@ -7,7 +7,7 @@
 
 #ifdef __cplusplus
 
-#include "RemoteServices.h"
+#include "RemoteServices/RemoteServices.h"
 
 #endif //__cplusplus
 

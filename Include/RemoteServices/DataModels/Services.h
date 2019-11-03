@@ -1,6 +1,6 @@
 #pragma once
 
-#include "RemoteServices.h"
+#include "RemoteServices/RemoteServices.h"
 #include "Networking/Connection.h"
 #include "MVC/DataModel.h"
 

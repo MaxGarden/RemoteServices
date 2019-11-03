@@ -35,7 +35,7 @@ ADD_LIBRARY(RemoteServices STATIC ${REMOTE_SERVICES_SOURCES})
 ADD_DEPENDENCIES(RemoteServices MVCUtilities Networking)
 
 TARGET_INCLUDE_DIRECTORIES(RemoteServices PUBLIC Include Dependencies/MVCUtilities/Include Dependencies/Networking/Include)
-TARGET_INCLUDE_DIRECTORIES(RemoteServices PRIVATE Source Source/RemoteServices Include/RemoteServices)
+TARGET_INCLUDE_DIRECTORIES(RemoteServices PRIVATE Source Source/RemoteServices)
 
 TARGET_LINK_LIBRARIES(RemoteServices Networking)
 

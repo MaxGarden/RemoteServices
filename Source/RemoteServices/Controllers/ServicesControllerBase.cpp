@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "Service.h"
-#include "DataModels/Services.h"
-#include "DataModels/ServicesListenerBase.h"
+#include "RemoteServices/Service.h"
+#include "RemoteServices/DataModels/Services.h"
+#include "RemoteServices/DataModels/ServicesListenerBase.h"
 #include "ServicesControllerBase.h"
 
 using namespace RemoteServices;
