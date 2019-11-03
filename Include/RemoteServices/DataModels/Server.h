@@ -20,10 +20,12 @@ namespace RemoteServices
     public:
         virtual ~IServer() override = default;
 
-        virtual bool Initalize() = 0;
+        virtual bool Initialize() = 0;
         virtual void Finalize() = 0;
 
         virtual void VisitClients(const MVC::ConstVisitorType<RemoteServices::IServicesSharedPtr>& visitor) = 0;
+
+        virtual void Update() = 0;
 
         static IServerUniquePtr Create(Networking::IServerUniquePtr&& server);
     };

@@ -13,10 +13,12 @@ public:
 
     bool SetServer(Networking::IServerUniquePtr&& server);
 
-    virtual bool Initalize() override final;
+    virtual bool Initialize() override final;
     virtual void Finalize() override final;
 
     virtual void VisitClients(const MVC::ConstVisitorType<RemoteServices::IServicesSharedPtr>& visitor) override final;
+
+    virtual void Update() override final;
 
 private:
     void OnClientConnected(const Networking::IConnectionSharedPtr& connection);
@@ -53,7 +55,7 @@ bool Server::SetServer(Networking::IServerUniquePtr&& server)
     return true;
 }
 
-bool Server::Initalize()
+bool Server::Initialize()
 {
     return m_server->Initialize();
 }
@@ -66,6 +68,11 @@ void Server::Finalize()
 void Server::VisitClients(const MVC::ConstVisitorType<RemoteServices::IServicesSharedPtr>& visitor)
 {
     VisitObjectsMap(m_clients, visitor);
+}
+
+void Server::Update()
+{
+    m_server->Update();
 }
 
 void Server::OnClientConnected(const Networking::IConnectionSharedPtr& connection)
