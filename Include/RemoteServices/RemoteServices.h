@@ -29,4 +29,6 @@ namespace RemoteServices
     DECLARE_POINTERS(IServicesBuildersProvider);
     DECLARE_POINTERS(IServer);
     DECLARE_POINTERS(IServerController);
+    DECLARE_POINTERS(IClient);
+    DECLARE_POINTERS(IClientController);
 }

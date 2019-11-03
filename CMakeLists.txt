@@ -15,6 +15,8 @@ SET(REMOTE_SERVICES_SOURCES
     Include/RemoteServices/DataModels/ServicesListenerBase.h
     Include/RemoteServices/DataModels/Server.h
     Include/RemoteServices/DataModels/ServerListenerBase.h
+    Include/RemoteServices/DataModels/Client.h
+    Include/RemoteServices/DataModels/ClientListenerBase.h
     
     Include/RemoteServices/Controllers/ServicesController.h
     Include/RemoteServices/Controllers/ServicesControllerListenerBase.h
@@ -27,6 +29,8 @@ SET(REMOTE_SERVICES_SOURCES
     Source/RemoteServices/DataModels/ServicesListenerBase.cpp
     Source/RemoteServices/DataModels/Server.cpp
     Source/RemoteServices/DataModels/ServerListenerBase.cpp
+    Source/RemoteServices/DataModels/Client.cpp
+    Source/RemoteServices/DataModels/ClientListenerBase.cpp
     
     Source/RemoteServices/Controllers/ServicesControllerBase.h
     Source/RemoteServices/Controllers/ServicesControllerBase.cpp
