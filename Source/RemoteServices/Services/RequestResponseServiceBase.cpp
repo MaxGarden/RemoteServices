@@ -100,7 +100,16 @@ bool RequestResponseServiceBase::SendRequest(const IServiceConnectionSharedPtr& 
     payload.insert(payload.begin(), c_requestTag);
     payload.insert(payload.begin(), request.Type);
 
-    connection->Send(std::move(payload));
+    if (!connection->Send(std::move(payload)))
+    {
+        REMOTE_SERVICES_ASSERT(false);
+        pendingRequests.back()(Response{ Response::ResponseType::Fail, {} });
+        pendingRequests.pop_back();
+
+        return false;
+    }
+
+    return true;
 }
 
 void RequestResponseServiceBase::OnRequestReceived(const IServiceConnectionSharedPtr& connection, ServicePayload&& payload)
