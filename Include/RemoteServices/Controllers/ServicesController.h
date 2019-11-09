@@ -24,6 +24,8 @@ namespace RemoteServices
 
         virtual void CreateServices() = 0;
 
+        virtual std::string GetRemoteAddress() const noexcept = 0;
+
         virtual bool Disconnect() = 0;
 
         static IServicesControllerUniquePtr CreateLocal(); //all registered services are created - server mode

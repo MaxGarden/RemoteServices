@@ -18,6 +18,8 @@ public:
     virtual bool IsConnected() const noexcept override final;
     virtual bool Send(Packet&& packet) override final;
 
+    virtual std::optional<std::string> GetRemoteAddress() const noexcept override final;
+
     virtual bool Disconnect() override final;
 
 private:
@@ -29,7 +31,7 @@ bool Services::SetConnection(const Networking::IConnectionSharedPtr& connection)
     REMOTE_SERVICES_ASSERT(!m_connection);
     if (!connection || !connection->IsConnected())
         return false;
-
+    
     m_connection = connection;
 
     m_connection->SetOnClosedCallback([this]()
@@ -77,6 +79,11 @@ bool Services::Send(Packet&& packet)
 
     REMOTE_SERVICES_ASSERT(result);
     return result;
+}
+
+std::optional<std::string> Services::GetRemoteAddress() const noexcept
+{
+    return m_connection ? std::make_optional(m_connection->GetAddress()) : std::nullopt;
 }
 
 bool Services::Disconnect()

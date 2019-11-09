@@ -12,6 +12,8 @@ namespace RemoteServices
         virtual bool RegisterServiceFactory(IServiceFactoryUniquePtr&& serviceFactory) override final;
         virtual void VisitServices(const MVC::VisitorType<IService>& visitor) const override final;
 
+        virtual std::string GetRemoteAddress() const noexcept override final;
+
         virtual bool Disconnect() override final;
 
         bool Send(byte servicePort, ServicePayload&& payload);

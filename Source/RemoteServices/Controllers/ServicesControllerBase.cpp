@@ -94,6 +94,13 @@ void ServicesControllerBase::VisitServices(const MVC::VisitorType<IService>& vis
     });
 }
 
+std::string ServicesControllerBase::GetRemoteAddress() const noexcept
+{
+    const auto& dataModel = GetDataModel();
+    const auto remoteAddress = dataModel ? dataModel->GetRemoteAddress() : std::nullopt;
+    return remoteAddress ? *remoteAddress : "No connection";
+}
+
 bool ServicesControllerBase::Disconnect()
 {
     const auto& dataModel = GetDataModel();

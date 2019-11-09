@@ -30,6 +30,8 @@ namespace RemoteServices
         virtual bool IsConnected() const noexcept = 0;
         virtual bool Send(Packet&& packet) = 0;
 
+        virtual std::optional<std::string> GetRemoteAddress() const noexcept = 0;
+
         virtual bool Disconnect() = 0;
 
         static IServicesUniquePtr Create(const Networking::IConnectionSharedPtr& connection);
