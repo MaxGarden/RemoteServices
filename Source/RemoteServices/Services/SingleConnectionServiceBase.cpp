@@ -11,7 +11,7 @@ bool SingleConnectionServiceBase::Initialize()
 
 void SingleConnectionServiceBase::OnBind(const IServiceConnectionSharedPtr& connection)
 {
-    DEBUG_ASSERT(!m_Connection);
+    REMOTE_SERVICES_ASSERT(!m_Connection);
     if (m_Connection)
         return;
 
@@ -30,9 +30,13 @@ void SingleConnectionServiceBase::Finalize()
     //to override
 }
 
-void SingleConnectionServiceBase::OnReceived(const ServicePayload&)
+void SingleConnectionServiceBase::OnReceived(const IServiceConnectionSharedPtr& connection, const ServicePayload& payload)
 {
-    //to override
+    REMOTE_SERVICES_ASSERT(connection == m_Connection);
+    if (connection != m_Connection)
+        return;
+
+    OnReceived(payload);
 }
 
 bool SingleConnectionServiceBase::Send(ServicePayload&& payload)

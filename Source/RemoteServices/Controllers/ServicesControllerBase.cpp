@@ -139,8 +139,9 @@ void ServicesControllerBase::OnReceived(const Packet& packet)
     if (iterator == m_pairedServices.cend())
         return;
 
-    if (const auto& service = iterator->second.Service)
-        service->OnReceived(packet.Payload);
+    const auto& serviceData = iterator->second;
+    if (const auto& service = serviceData.Service)
+        service->OnReceived(serviceData.Connection, packet.Payload);
 }
 
 void ServicesControllerBase::OnConnected()

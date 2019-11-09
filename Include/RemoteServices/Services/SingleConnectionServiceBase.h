@@ -17,9 +17,11 @@ namespace RemoteServices
 
         virtual void Finalize() override;
 
-        virtual void OnReceived(const ServicePayload& payload) override;
+        virtual void OnReceived(const IServiceConnectionSharedPtr& connection, const ServicePayload& payload) override final;
 
     protected:
+        virtual void OnReceived(const ServicePayload& payload) = 0;
+
         bool Send(ServicePayload&& payload);
         const IServiceConnectionSharedPtr& GetConnection() const noexcept;
 
