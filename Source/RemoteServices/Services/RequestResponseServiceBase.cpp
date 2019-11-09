@@ -3,6 +3,9 @@
 
 using namespace RemoteServices;
 
+const byte RequestResponseServiceBase::c_requestTag = 0;
+const byte RequestResponseServiceBase::c_responseTag = 1;
+
 bool RequestResponseServiceBase::Initialize()
 {
     OnRegisterRequestsHandlers();
@@ -44,20 +47,21 @@ void RequestResponseServiceBase::OnReceived(const IServiceConnectionSharedPtr& c
     if (payload.empty())
         return;
 
-    const auto iterator = m_pendingRequests.find(connection);
-    REMOTE_SERVICES_ASSERT(iterator != m_pendingRequests.cend());
-    if (iterator == m_pendingRequests.cend())
-        return;
-
-    auto& pendingRequests = iterator->second;
-    const auto& responseCallback = pendingRequests.front();
-
-    const auto responseType = static_cast<Response::ResponseType>(payload[0]);
+    const auto tag = payload[0];
     const auto beginIterator = payload.cbegin() + sizeof(Response::ResponseType);
     const auto endIterator = payload.cend();
+    
+    auto servicePayload = ServicePayload{ beginIterator, endIterator };
 
-    responseCallback(Response{ responseType, ServicePayload{ beginIterator, endIterator } });
-    pendingRequests.pop_front();
+    switch (tag)
+    {
+    case c_requestTag:
+        return OnRequestReceived(connection, std::move(servicePayload));
+    case c_responseTag:
+        return OnResponseReceived(connection, std::move(servicePayload));
+    default:
+        REMOTE_SERVICES_ASSERT(false);
+    }
 }
 
 bool RequestResponseServiceBase::RegisterRequestHandler(Request::RequestType request, RequestHandler&& requestHandler)
@@ -93,7 +97,57 @@ bool RequestResponseServiceBase::SendRequest(const IServiceConnectionSharedPtr& 
     pendingRequests.emplace_back(std::move(responseCallback));
 
     auto&& payload = std::move(request.Payload);
+    payload.insert(payload.begin(), c_requestTag);
     payload.insert(payload.begin(), request.Type);
 
     connection->Send(std::move(payload));
+}
+
+void RequestResponseServiceBase::OnRequestReceived(const IServiceConnectionSharedPtr& connection, ServicePayload&& payload)
+{
+    REMOTE_SERVICES_ASSERT(!payload.empty());
+    if (payload.empty())
+        return;
+
+    const auto requestType = payload[0];
+    const auto iterator = m_requestsHandlers.find(requestType);
+    if (iterator == m_requestsHandlers.cend())
+    {
+        connection->Send({ c_responseTag, static_cast<byte>(Response::ResponseType::Fail) });
+        return;
+    }
+
+    payload.erase(payload.begin());
+    auto response = iterator->second(std::move(payload));
+    auto& responseType = response.Type;
+
+    REMOTE_SERVICES_ASSERT(responseType != Response::ResponseType::Unbind);
+    if (responseType == Response::ResponseType::Unbind)
+        responseType = Response::ResponseType::Fail;
+
+    auto&& servicePayload = std::move(response.Payload);
+
+    servicePayload.insert(servicePayload.begin(), { c_responseTag, static_cast<byte>(response.Type) });
+    connection->Send(std::move(servicePayload));
+}
+
+void RequestResponseServiceBase::OnResponseReceived(const IServiceConnectionSharedPtr& connection, ServicePayload&& payload)
+{
+    REMOTE_SERVICES_ASSERT(!payload.empty());
+    if (payload.empty())
+        return;
+
+    const auto iterator = m_pendingRequests.find(connection);
+    REMOTE_SERVICES_ASSERT(iterator != m_pendingRequests.cend());
+    if (iterator == m_pendingRequests.cend())
+        return;
+
+    auto& pendingRequests = iterator->second;
+    const auto& responseCallback = pendingRequests.front();
+
+    const auto responseType = static_cast<Response::ResponseType>(payload[0]);
+    payload.erase(payload.begin());
+
+    responseCallback(Response{ responseType, std::move(payload)});
+    pendingRequests.pop_front();
 }

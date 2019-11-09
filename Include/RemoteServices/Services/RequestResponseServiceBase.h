@@ -22,7 +22,7 @@ namespace RemoteServices
             {
                 Ok,
                 Fail,
-                Unbind //internal usage only
+                Unbind, //internal usage only
 
             } Type;
 
@@ -55,7 +55,14 @@ namespace RemoteServices
         bool SendRequest(const IServiceConnectionSharedPtr& connection, Request&& request, ResponseCallback&& responseCallback);
 
     private:
+        void OnRequestReceived(const IServiceConnectionSharedPtr& connection, ServicePayload&& payload);
+        void OnResponseReceived(const IServiceConnectionSharedPtr& connection, ServicePayload&& payload);
+
+    private:
         std::map<Request::RequestType, RequestHandler> m_requestsHandlers;
         std::map<IServiceConnectionSharedPtr, std::deque<ResponseCallback>> m_pendingRequests;
+
+        static const byte c_requestTag;
+        static const byte c_responseTag;
     };
 }
