@@ -39,7 +39,7 @@ private:
 
 
 ServicesControllerListener::ServicesControllerListener(ServicesControllerBase& controller) :
-    m_controller(controller)
+    m_controller{ controller }
 {
 }
 
@@ -54,8 +54,8 @@ void ServicesControllerListener::OnDisconnected()
 }
 
 ServiceConnection::ServiceConnection(byte servicePort, ServicesControllerBase* controller) :
-    m_servicePort(servicePort),
-    m_controller(controller)
+    m_servicePort{ servicePort },
+    m_controller{ controller }
 {
 }
 

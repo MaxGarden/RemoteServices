@@ -40,7 +40,7 @@ private:
 };
 
 ClientControllerListener::ClientControllerListener(ClientController& clientController) :
-    m_clientController(clientController)
+    m_clientController{ clientController }
 {
 }
 

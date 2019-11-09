@@ -40,7 +40,7 @@ private:
 };
 
 ServerControllerListener::ServerControllerListener(ServerController& serverController) :
-    m_serverController(serverController)
+    m_serverController{ serverController }
 {
 }
 

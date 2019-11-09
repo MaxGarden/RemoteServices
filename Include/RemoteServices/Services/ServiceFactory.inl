@@ -1,6 +1,6 @@
 template<typename ServiceType>
 ServiceFactory<ServiceType>::ServiceFactory(std::string&& serviceName) :
-    m_serviceName(std::move(serviceName))
+    m_serviceName{ std::move(serviceName) }
 {
 }
 
