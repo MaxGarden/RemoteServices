@@ -71,7 +71,7 @@ bool RequestResponseServiceBase::RegisterRequestHandler(Request::RequestType req
         return false;
 
     m_requestsHandlers.emplace(request, std::move(requestHandler));
-    return false;
+    return true;
 }
 
 bool RequestResponseServiceBase::UnregisterRequestHandler(Request::RequestType request)
