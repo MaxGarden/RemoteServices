@@ -39,16 +39,14 @@ namespace RemoteServices
 
         virtual bool Initialize() override;
 
-        virtual void OnBind(const IServiceConnectionSharedPtr& connection) override final;
-        virtual void OnUnbind(const IServiceConnectionSharedPtr& connection) override final;
+        virtual void OnBind(const IServiceConnectionSharedPtr& connection) override;
+        virtual void OnUnbind(const IServiceConnectionSharedPtr& connection) override;
 
         virtual void Finalize() override;
 
         virtual void OnReceived(const IServiceConnectionSharedPtr& connection, const ServicePayload& payload) override final;
 
     protected:
-        virtual void OnRegisterRequestsHandlers() = 0;
-
         bool RegisterRequestHandler(Request::RequestType request, RequestHandler&& requestHandler);
         bool UnregisterRequestHandler(Request::RequestType request);
 

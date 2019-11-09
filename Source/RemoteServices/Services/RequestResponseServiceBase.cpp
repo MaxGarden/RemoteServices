@@ -8,7 +8,6 @@ const byte RequestResponseServiceBase::c_responseTag = 1;
 
 bool RequestResponseServiceBase::Initialize()
 {
-    OnRegisterRequestsHandlers();
     return true;
 }
 
