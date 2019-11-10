@@ -3,12 +3,6 @@
 
 using namespace RemoteServices;
 
-bool SingleConnectionRequestResponseServiceBase::Initialize()
-{
-    //to override
-    return true;
-}
-
 void SingleConnectionRequestResponseServiceBase::OnBind(const IServiceConnectionSharedPtr& connection)
 {
     REMOTE_SERVICES_ASSERT(!m_connection);
@@ -16,18 +10,17 @@ void SingleConnectionRequestResponseServiceBase::OnBind(const IServiceConnection
         return;
 
     m_connection = connection;
+    RequestResponseServiceBase::OnBind(connection);
 }
 
 void SingleConnectionRequestResponseServiceBase::OnUnbind(const IServiceConnectionSharedPtr& connection)
 {
     REMOTE_SERVICES_ASSERT(m_connection == connection);
-    if (m_connection == connection)
-        m_connection.reset();
-}
+    if (m_connection != connection)
+        return;
 
-void SingleConnectionRequestResponseServiceBase::Finalize()
-{
-    //to override
+    RequestResponseServiceBase::OnUnbind(connection);
+    m_connection.reset();
 }
 
 bool SingleConnectionRequestResponseServiceBase::SendRequest(Request&& request, ResponseCallback&& responseCallback)

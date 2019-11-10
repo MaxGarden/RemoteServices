@@ -96,8 +96,8 @@ bool RequestResponseServiceBase::SendRequest(const IServiceConnectionSharedPtr& 
     pendingRequests.emplace_back(std::move(responseCallback));
 
     auto&& payload = std::move(request.Payload);
-    payload.insert(payload.begin(), c_requestTag);
     payload.insert(payload.begin(), request.Type);
+    payload.insert(payload.begin(), c_requestTag);
 
     if (!connection->Send(std::move(payload)))
     {

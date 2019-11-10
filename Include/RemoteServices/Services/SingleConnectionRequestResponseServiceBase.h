@@ -10,12 +10,8 @@ namespace RemoteServices
         SingleConnectionRequestResponseServiceBase() = default;
         virtual ~SingleConnectionRequestResponseServiceBase() override = default;
 
-        virtual bool Initialize() override;
-
         virtual void OnBind(const IServiceConnectionSharedPtr& connection) override;
         virtual void OnUnbind(const IServiceConnectionSharedPtr& connection) override;
-
-        virtual void Finalize() override;
 
     protected:
         bool SendRequest(Request&& request, ResponseCallback&& responseCallback);
