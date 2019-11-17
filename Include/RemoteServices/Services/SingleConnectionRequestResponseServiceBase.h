@@ -14,7 +14,7 @@ namespace RemoteServices
         virtual void OnUnbind(const IServiceConnectionSharedPtr& connection) override;
 
     protected:
-        bool SendRequest(Request&& request, ResponseCallback&& responseCallback);
+        IResponseHandleSharedPtr SendRequest(Request&& request, ResponseCallback&& responseCallback);
 
     private:
         IServiceConnectionSharedPtr m_connection;

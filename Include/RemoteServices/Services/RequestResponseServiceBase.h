@@ -4,6 +4,16 @@
 
 namespace RemoteServices
 {
+
+    class IResponseHandle
+    {
+    public:
+        virtual ~IResponseHandle() = default;
+
+        virtual bool IsValid() const noexcept = 0;
+        virtual void Invalidate() = 0;
+    };
+
     class RequestResponseServiceBase : public IService
     {
     public:
@@ -29,7 +39,6 @@ namespace RemoteServices
             ServicePayload Payload;
         };
 
-
         using RequestHandler = std::function<Response(ServicePayload&&)>;
         using ResponseCallback = std::function<void(Response&&)>;
 
@@ -50,7 +59,7 @@ namespace RemoteServices
         bool RegisterRequestHandler(Request::RequestType request, RequestHandler&& requestHandler);
         bool UnregisterRequestHandler(Request::RequestType request);
 
-        bool SendRequest(const IServiceConnectionSharedPtr& connection, Request&& request, ResponseCallback&& responseCallback);
+        IResponseHandleSharedPtr SendRequest(const IServiceConnectionSharedPtr& connection, Request&& request, ResponseCallback&& responseCallback);
 
     private:
         void OnRequestReceived(const IServiceConnectionSharedPtr& connection, ServicePayload&& payload);
@@ -58,7 +67,7 @@ namespace RemoteServices
 
     private:
         std::map<Request::RequestType, RequestHandler> m_requestsHandlers;
-        std::map<IServiceConnectionSharedPtr, std::deque<ResponseCallback>> m_pendingRequests;
+        std::map<IServiceConnectionSharedPtr, std::deque<IResponseHandleSharedPtr>> m_pendingRequests;
 
         static const byte c_requestTag;
         static const byte c_responseTag;

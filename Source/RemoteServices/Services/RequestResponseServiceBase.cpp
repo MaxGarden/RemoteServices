@@ -6,6 +6,45 @@ using namespace RemoteServices;
 const byte RequestResponseServiceBase::c_requestTag = 0;
 const byte RequestResponseServiceBase::c_responseTag = 1;
 
+
+class ResponseHandle final : public IResponseHandle
+{
+public:
+    ResponseHandle(RequestResponseServiceBase::ResponseCallback&& responseCallback);
+    virtual ~ResponseHandle() override final = default;
+
+    virtual bool IsValid() const noexcept override final;
+    virtual void Invalidate() override final;
+
+    void Invoke(RequestResponseServiceBase::Response&& response);
+
+private:
+    RequestResponseServiceBase::ResponseCallback m_responseCallback;
+};
+
+ResponseHandle::ResponseHandle(RequestResponseServiceBase::ResponseCallback&& responseCallback) :
+    m_responseCallback{ std::move(responseCallback) }
+{
+}
+
+bool ResponseHandle::IsValid() const noexcept
+{
+    return !!m_responseCallback;
+}
+
+void ResponseHandle::Invalidate()
+{
+    m_responseCallback = {};
+}
+
+void ResponseHandle::Invoke(RequestResponseServiceBase::Response&& response)
+{
+    if (!IsValid())
+        return;
+
+    m_responseCallback(std::move(response));
+}
+
 bool RequestResponseServiceBase::Initialize()
 {
     return true;
@@ -13,7 +52,7 @@ bool RequestResponseServiceBase::Initialize()
 
 void RequestResponseServiceBase::OnBind(const IServiceConnectionSharedPtr& connection)
 {
-    m_pendingRequests.emplace(connection, std::deque<ResponseCallback>{});
+    m_pendingRequests.emplace(connection, std::deque<IResponseHandleSharedPtr>{});
 }
 
 void RequestResponseServiceBase::OnUnbind(const IServiceConnectionSharedPtr& connection)
@@ -26,8 +65,8 @@ void RequestResponseServiceBase::OnUnbind(const IServiceConnectionSharedPtr& con
     auto& pendingRequests = iterator->second;
     while (!pendingRequests.empty())
     {
-        const auto& responseCallback = pendingRequests.front();
-        responseCallback(Response{ Response::ResponseType::Unbind, ServicePayload{} });
+        const auto& responseHandle = pendingRequests.front();
+        static_cast<ResponseHandle*>(responseHandle.get())->Invoke(Response{ Response::ResponseType::Unbind, ServicePayload{} });
         pendingRequests.pop_front();
     }
 
@@ -85,15 +124,19 @@ bool RequestResponseServiceBase::UnregisterRequestHandler(Request::RequestType r
     return true;
 }
 
-bool RequestResponseServiceBase::SendRequest(const IServiceConnectionSharedPtr& connection, Request&& request, ResponseCallback&& responseCallback)
+IResponseHandleSharedPtr RequestResponseServiceBase::SendRequest(const IServiceConnectionSharedPtr& connection, Request&& request, ResponseCallback&& responseCallback)
 {
+    REMOTE_SERVICES_ASSERT(responseCallback);
+    if (!responseCallback)
+        return nullptr;
+
     const auto iterator = m_pendingRequests.find(connection);
     REMOTE_SERVICES_ASSERT(iterator != m_pendingRequests.cend());
     if (iterator == m_pendingRequests.cend())
         return false;
 
     auto& pendingRequests = iterator->second;
-    pendingRequests.emplace_back(std::move(responseCallback));
+    pendingRequests.emplace_back(std::make_shared<ResponseHandle>(std::move(responseCallback)));
 
     auto&& payload = std::move(request.Payload);
     payload.insert(payload.begin(), request.Type);
@@ -102,13 +145,12 @@ bool RequestResponseServiceBase::SendRequest(const IServiceConnectionSharedPtr& 
     if (!connection->Send(std::move(payload)))
     {
         REMOTE_SERVICES_ASSERT(false);
-        pendingRequests.back()(Response{ Response::ResponseType::Fail, {} });
         pendingRequests.pop_back();
 
-        return false;
+        return nullptr;
     }
 
-    return true;
+    return pendingRequests.back();
 }
 
 void RequestResponseServiceBase::OnRequestReceived(const IServiceConnectionSharedPtr& connection, ServicePayload&& payload)
@@ -151,11 +193,11 @@ void RequestResponseServiceBase::OnResponseReceived(const IServiceConnectionShar
         return;
 
     auto& pendingRequests = iterator->second;
-    const auto& responseCallback = pendingRequests.front();
+    const auto& responseHandle = pendingRequests.front();
 
     const auto responseType = static_cast<Response::ResponseType>(payload[0]);
     payload.erase(payload.begin());
 
-    responseCallback(Response{ responseType, std::move(payload)});
+    static_cast<ResponseHandle*>(responseHandle.get())->Invoke(Response{ responseType, std::move(payload)});
     pendingRequests.pop_front();
 }

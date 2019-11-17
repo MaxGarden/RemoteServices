@@ -23,15 +23,15 @@ void SingleConnectionRequestResponseServiceBase::OnUnbind(const IServiceConnecti
     m_connection.reset();
 }
 
-bool SingleConnectionRequestResponseServiceBase::SendRequest(Request&& request, ResponseCallback&& responseCallback)
+IResponseHandleSharedPtr SingleConnectionRequestResponseServiceBase::SendRequest(Request&& request, ResponseCallback&& responseCallback)
 {
     REMOTE_SERVICES_ASSERT(m_connection);
     if (!m_connection)
-        return false;
+        return nullptr;
 
     REMOTE_SERVICES_ASSERT(responseCallback);
     if (!responseCallback)
-        return false;
+        return nullptr;
 
     return RequestResponseServiceBase::SendRequest(m_connection, std::move(request), std::move(responseCallback));
 }

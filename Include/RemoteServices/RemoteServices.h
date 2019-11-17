@@ -31,4 +31,5 @@ namespace RemoteServices
     DECLARE_POINTERS(IServerController);
     DECLARE_POINTERS(IClient);
     DECLARE_POINTERS(IClientController);
+    DECLARE_POINTERS(IResponseHandle);
 }
