@@ -133,7 +133,7 @@ IResponseHandleSharedPtr RequestResponseServiceBase::SendRequest(const IServiceC
     const auto iterator = m_pendingRequests.find(connection);
     REMOTE_SERVICES_ASSERT(iterator != m_pendingRequests.cend());
     if (iterator == m_pendingRequests.cend())
-        return false;
+        return nullptr;
 
     auto& pendingRequests = iterator->second;
     pendingRequests.emplace_back(std::make_shared<ResponseHandle>(std::move(responseCallback)));
